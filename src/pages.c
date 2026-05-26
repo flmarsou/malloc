@@ -34,8 +34,16 @@ page_t *create_page(size_t size)
     if (page == MAP_FAILED)
         return (NULL);
 
+    chunk_t *chunk = (chunk_t *)((char *)page + sizeof(page_t));
+
+    chunk->size = size - sizeof(page_t) - sizeof(chunk_t);
+    chunk->free = true;
+    chunk->page = page;
+    chunk->next = NULL;
+    chunk->prev = NULL;
+
     page->size   = size;
-    page->chunks = NULL;
+    page->chunks = chunk;
     page->next   = NULL;
     page->prev   = NULL;
 
