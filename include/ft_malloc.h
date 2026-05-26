@@ -16,6 +16,7 @@ typedef struct chunk
 {
     size_t        size;
     bool          free;
+    struct page  *page;
     struct chunk *next;
     struct chunk *prev;
 } chunk_t;
