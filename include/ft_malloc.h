@@ -52,6 +52,7 @@ void    *ft_malloc(size_t size);
 page_t **get_page_head(size_t size);
 size_t   get_page_size(size_t size);
 page_t  *create_page(size_t size);
+void     append_page(page_t **pages, page_t *page);
 
 chunk_t *find_free_chunk(const page_t *page, size_t size);
 void     split_chunk(chunk_t *chunk, size_t size);

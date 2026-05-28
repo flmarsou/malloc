@@ -49,3 +49,17 @@ page_t *create_page(size_t size)
 
     return (page);
 }
+
+void append_page(page_t **pages, page_t *page)
+{
+    page_t *head = *pages;
+    if (!head)
+        *pages = page;
+    else
+    {
+        while (head->next)
+            head = head->next;
+        head->next = page;
+        page->prev = head;
+    }
+}
