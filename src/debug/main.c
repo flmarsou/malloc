@@ -2,18 +2,17 @@
 
 int main(void)
 {
-    char *asd = ft_malloc(10);
-    asd[0] = 'h';
-    asd[1] = 'h';
-    asd[2] = '\0';
+    char *asd = ft_malloc(128);
 
-    ft_malloc(69);
-    ft_malloc(420);
-    ft_malloc(1025);
+    asd[0] = 0xff;
 
-    show_alloc_mem();
+    for (int i = 32; i < 120; ++i)
+        asd[i] = i;
 
-    // show_alloc_mem_ex();
+    for (int i = 1; i < 23; ++i)
+        asd[i] = i;
+
+    show_alloc_mem_ex();
 
     return (0);
 }
