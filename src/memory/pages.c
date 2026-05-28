@@ -15,11 +15,11 @@ page_t **get_page_head(size_t size)
 size_t get_page_size(size_t size)
 {
     if (size <= TINY_CHUNK_SIZE)
-        return (ALIGN_PAGE(TINY_PAGE_SIZE + sizeof(page_t)));
+        return (ALIGN_PAGE(TINY_PAGE_SIZE));
     else if (size <= SMALL_CHUNK_SIZE)
-        return (ALIGN_PAGE(SMALL_PAGE_SIZE + sizeof(page_t)));
+        return (ALIGN_PAGE(SMALL_PAGE_SIZE));
     else
-        return (ALIGN_PAGE(size + sizeof(page_t)));
+        return (ALIGN_PAGE(size + sizeof(page_t) + sizeof(chunk_t)));
 }
 
 page_t *create_page(size_t size)
