@@ -1,5 +1,6 @@
 #include "ft_malloc.h"
-#include <stdio.h>
+
+# include <unistd.h>
 
 size_t      g_pagesize;
 allocator_t g_allocator;
@@ -13,38 +14,38 @@ void *ft_malloc(size_t size)
         g_pagesize = sysconf(_SC_PAGESIZE);
 
     page_t **pages = get_page_head(size);
-    page_t  *page  = *pages;
-
     chunk_t *chunk = NULL;
+    page_t  *page  = NULL;
 
-    // Search existing pages
-    while (page)
+    if (size > SMALL_CHUNK_SIZE)
     {
-        chunk = find_free_chunk(page, size);
-        if (chunk)
-            break ;
-        page = page->next;
-    }
-
-    // No free chunk found, create a new page
-    if (!chunk)
-    {
+        // Large: always a new page
         page = create_page(get_page_size(size));
         if (!page)
             return (NULL);
-
-        page_t *head = *pages;
-        if (!head)
-            *pages = page;
-        else
+        append_page(pages, page);
+        chunk = page->chunks;
+    }
+    else
+    {
+        // Tiny/Small: search existing page
+        page = *pages;
+        while (page)
         {
-            while (head->next)
-                head = head->next;
-            head->next = page;
-            page->prev = head;
+            chunk = find_free_chunk(page, size);
+            if (chunk)
+                break ;
+            page = page->next;
         }
 
-        chunk = page->chunks;
+        if (!chunk)
+        {
+            page = create_page(get_page_size(size));
+            if (!page)
+                return (NULL);
+            append_page(pages, page);
+            chunk = page->chunks;
+        }
     }
 
     split_chunk(chunk, size);
