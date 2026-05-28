@@ -2,13 +2,12 @@
 
 # include <stddef.h>
 # include <stdbool.h>
-# include <unistd.h>
 
 # define TINY_CHUNK_SIZE  128  // Maximum allocation size considered "tiny"
 # define SMALL_CHUNK_SIZE 1024 // Maximum allocation size considered "small"
 
-# define TINY_PAGE_SIZE   (TINY_CHUNK_SIZE * 100)  // Maximum size in bytes of tiny pages
-# define SMALL_PAGE_SIZE  (SMALL_CHUNK_SIZE * 100) // Maximum size in bytes of small pages
+# define TINY_PAGE_SIZE   ((TINY_CHUNK_SIZE + sizeof(chunk_t)) * 121 + sizeof(page_t))  // Maximum size in bytes of tiny pages
+# define SMALL_PAGE_SIZE  ((SMALL_CHUNK_SIZE + sizeof(chunk_t)) * 121 + sizeof(page_t)) // Maximum size in bytes of small pages
 
 // Rounds up `size` to the nearest multiple of `g_pagesize`.
 # define ALIGN_PAGE(size) (((size) + (g_pagesize - 1)) & ~(g_pagesize - 1))
