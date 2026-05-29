@@ -22,7 +22,6 @@ static void reset_color()
     printf("%s", RESET);
 }
 
-
 static void hex_dump(void *start, size_t size)
 {
     unsigned char *ptr = (unsigned char *)start;
