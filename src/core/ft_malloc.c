@@ -13,23 +13,24 @@ void *ft_malloc(size_t size)
     if (g_pagesize == 0)
         g_pagesize = sysconf(_SC_PAGESIZE);
 
-    page_t **pages = get_page_head(size);
-    chunk_t *chunk = NULL;
+    page_t **head = get_page_head(size);
     page_t  *page  = NULL;
+    chunk_t *chunk = NULL;
 
     if (size > SMALL_CHUNK_SIZE)
     {
-        // Large: always a new page
+        // Large: always create a new page
         page = create_page(get_page_size(size));
         if (!page)
             return (NULL);
-        append_page(pages, page);
+
+        append_page(head, page);
         chunk = page->chunks;
     }
     else
     {
         // Tiny/Small: search existing page
-        page = *pages;
+        page = *head;
         while (page)
         {
             chunk = find_free_chunk(page, size);
@@ -38,12 +39,14 @@ void *ft_malloc(size_t size)
             page = page->next;
         }
 
+        // Tiny/Small: create a new page
         if (!chunk)
         {
             page = create_page(get_page_size(size));
             if (!page)
                 return (NULL);
-            append_page(pages, page);
+
+            append_page(head, page);
             chunk = page->chunks;
         }
     }
