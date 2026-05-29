@@ -17,15 +17,17 @@ static void show_page(const page_t *page, size_t *total, size_t *total_raw)
 
         while (chunk)
         {
-            if (!chunk->free)
-            {
-                void *start = (void *)(char *)chunk + sizeof(chunk_t);
-                void *end   = start + chunk->size;
+            void *start = (void *)(char *)chunk + sizeof(chunk_t);
+            void *end   = start + chunk->size;
 
+            *total += chunk->size;
+            *total_raw += chunk->size + sizeof(chunk_t);
+
+            if (!chunk->free)
                 printf("      %sChunk [%03zu]%s -> %s%s%p%s - %s%s%p%s : %s%zu bytes%s\n", CYAN, chunk_index, RESET, GREEN, BOLD, start, RESET, GREEN, BOLD, end, RESET, YELLOW, chunk->size, RESET);
-                *total += chunk->size;
-                *total_raw += chunk->size + sizeof(chunk_t);
-            }
+            else
+                printf("      %sChunk [%03zu]%s -> %s%s%p%s - %s%s%p%s : %s%zu freed bytes%s\n", CYAN, chunk_index, RESET, GREEN, BOLD, start, RESET, GREEN, BOLD, end, RESET, GRAY, chunk->size, RESET);
+
             chunk = chunk->next;
             ++chunk_index;
         }
