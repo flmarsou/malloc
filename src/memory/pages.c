@@ -50,16 +50,39 @@ page_t *create_page(size_t size)
     return (page);
 }
 
-void append_page(page_t **pages, page_t *page)
+void append_page(page_t **head, page_t *page)
 {
-    page_t *head = *pages;
-    if (!head)
-        *pages = page;
-    else
+    page_t *current = *head;
+
+    if (!current)
     {
-        while (head->next)
-            head = head->next;
-        head->next = page;
-        page->prev = head;
+        *head = page;
+        return ;
+    }
+
+    while (current->next)
+        current = current->next;
+
+    current->next = page;
+    page->prev    = current;
+}
+
+void remove_page(page_t **head, page_t *page)
+{
+    if (*head == page)
+    {
+        *head = page->next;
+        return ;
+    }
+
+    page_t *current = *head;
+    while (current)
+    {
+        if (current->next == page)
+        {
+            current->next = page->next;
+            return ;
+        }
+        current = current->next;
     }
 }
