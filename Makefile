@@ -2,6 +2,8 @@ EXE	:=	ft_malloc
 
 SRC_CORE	:=	\
 				src/core/ft_malloc.c \
+				src/core/ft_free.c \
+				src/core/ft_realloc.c \
 
 SRC_MEMORY	:=	\
 				src/memory/pages.c \
