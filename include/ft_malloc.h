@@ -2,6 +2,7 @@
 
 # include <stddef.h>
 # include <stdbool.h>
+# include <pthread.h>
 
 # define TINY_CHUNK_SIZE  128  // Maximum allocation size considered "tiny"
 # define SMALL_CHUNK_SIZE 1024 // Maximum allocation size considered "small"
@@ -40,8 +41,9 @@ typedef struct
     page_t *large; // Head of the large page list (anything bigger)
 } allocator_t;
 
-extern size_t      g_pagesize;  // Cached result of sysconf(_SC_PAGESIZE)
-extern allocator_t g_allocator; // Global allocator state
+extern size_t          g_pagesize;     // Cached result of sysconf(_SC_PAGESIZE)
+extern allocator_t     g_allocator;    // Global allocator state
+extern pthread_mutex_t g_malloc_mutex;
 
 // ========================================================================== //
 //    Functions                                                               //
