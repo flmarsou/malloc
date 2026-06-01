@@ -2,7 +2,6 @@
 
 # include <unistd.h>
 
-size_t          g_pagesize;
 allocator_t     g_allocator;
 pthread_mutex_t g_malloc_mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -13,7 +12,7 @@ void *ft_malloc(size_t size)
 
     pthread_mutex_lock(&g_malloc_mutex);
 
-    if (g_pagesize == 0)
+    if (g_allocator.pagesize == 0)
         g_allocator.pagesize = sysconf(_SC_PAGESIZE);
 
     page_t **head = get_page_head(size);
