@@ -42,6 +42,10 @@ ${NAME}:	${OBJS}
 		${CC} ${CFLAGS} -shared -o ${NAME} ${OBJS} -lpthread
 		ln -sf ${NAME} ${LINK}
 
+test:		${NAME}
+		cc -o tester test/main.c -L. -lft_malloc -Iinclude
+		LD_LIBRARY_PATH=. ./tester
+
 %.o:		%.c
 		${CC} ${CFLAGS} -c $< -o $@
 
