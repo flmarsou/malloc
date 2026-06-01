@@ -9,15 +9,21 @@ void ft_free(void *ptr)
     if (!ptr)
         return ;
 
+    pthread_mutex_lock(&g_malloc_mutex);
+
     chunk_t *chunk = find_allocated_chunk(ptr);
     if (!chunk)
     {
         printf("ft_free(): invalid pointer\n");
+        pthread_mutex_unlock(&g_malloc_mutex);
         abort();
     }
 
     if (chunk->free)
+    {
+        pthread_mutex_unlock(&g_malloc_mutex);
         return ;
+    }
 
     chunk->free = true;
     merge_chunk(chunk);
@@ -38,4 +44,6 @@ void ft_free(void *ptr)
         remove_page(head, page);
         munmap(page, page->size);
     }
+
+    pthread_mutex_unlock(&g_malloc_mutex);
 }
