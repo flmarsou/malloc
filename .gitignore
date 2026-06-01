@@ -1,5 +1,7 @@
 # Output files
 ft_malloc
+**/*.o
+**/*.so
 
 # IDEs
 compile_flags.txt
