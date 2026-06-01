@@ -1,5 +1,6 @@
 # Output files
-ft_malloc
+tester
+
 **/*.o
 **/*.so
 
