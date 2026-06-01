@@ -14,7 +14,7 @@ void *ft_malloc(size_t size)
     pthread_mutex_lock(&g_malloc_mutex);
 
     if (g_pagesize == 0)
-        g_pagesize = sysconf(_SC_PAGESIZE);
+        g_allocator.pagesize = sysconf(_SC_PAGESIZE);
 
     page_t **head = get_page_head(size);
     page_t  *page  = NULL;

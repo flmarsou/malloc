@@ -10,8 +10,8 @@
 # define TINY_PAGE_SIZE   ((TINY_CHUNK_SIZE + sizeof(chunk_t)) * 121 + sizeof(page_t))  // Maximum size in bytes of tiny pages
 # define SMALL_PAGE_SIZE  ((SMALL_CHUNK_SIZE + sizeof(chunk_t)) * 121 + sizeof(page_t)) // Maximum size in bytes of small pages
 
-// Rounds up `size` to the nearest multiple of `g_pagesize`.
-# define ALIGN_PAGE(size) (((size) + (g_pagesize - 1)) & ~(g_pagesize - 1))
+// Rounds up `size` to the nearest multiple of `sysconf(_SC_PAGESIZE)`.
+# define ALIGN_PAGE(size) (((size) + (g_allocator.pagesize - 1)) & ~(g_allocator.pagesize - 1))
 
 // ========================================================================== //
 //    Data                                                                    //
@@ -36,13 +36,13 @@ typedef struct page
 
 typedef struct
 {
-    page_t *tiny;  // Head of the tiny page list (<= TINY_CHUNK_SIZE bytes)
-    page_t *small; // Head of the small page list (<= SMALL_CHUNK_SIZE bytes)
-    page_t *large; // Head of the large page list (anything bigger)
+    page_t *tiny;     // Head of the tiny page list (<= TINY_CHUNK_SIZE bytes)
+    page_t *small;    // Head of the small page list (<= SMALL_CHUNK_SIZE bytes)
+    page_t *large;    // Head of the large page list (anything bigger)
+    size_t  pagesize; // Cached result of sysconf(_SC_PAGESIZE)
 } allocator_t;
 
-extern size_t          g_pagesize;     // Cached result of sysconf(_SC_PAGESIZE)
-extern allocator_t     g_allocator;    // Global allocator state
+extern allocator_t     g_allocator;
 extern pthread_mutex_t g_malloc_mutex;
 
 // ========================================================================== //
