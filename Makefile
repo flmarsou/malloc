@@ -19,8 +19,9 @@ SRC_MEMORY	:=	\
 				src/memory/chunks.c \
 
 SRC_DEBUG	:=	\
-				src/debug/show_alloc_mem.c    \
-				src/debug/show_alloc_mem_ex.c \
+				src/debug/show_alloc_mem.c      \
+				src/debug/show_alloc_mem_ex.c   \
+				src/debug/show_alloc_mem_time.c \
 
 # ============================================================================ #
 #     Variables                                                                #
