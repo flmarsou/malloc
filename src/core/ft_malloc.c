@@ -60,6 +60,7 @@ void *ft_malloc(size_t size)
     }
 
     split_chunk(chunk, size);
+    chunk->time = get_time();
     chunk->free = false;
 
     pthread_mutex_unlock(&g_malloc_mutex);

@@ -1,5 +1,9 @@
 #include "ft_malloc.h"
 
+#include <stdlib.h>
+# include <time.h>
+# include <stdio.h>
+
 chunk_t *find_free_chunk(const page_t *page, size_t size)
 {
     chunk_t *chunk = page->chunks;
@@ -19,6 +23,7 @@ void split_chunk(chunk_t *chunk, size_t size)
     if (chunk->size < size + sizeof(chunk_t) + 1)
     {
         chunk->free = false;
+        chunk->time = get_time();
         return ;
     }
 
@@ -79,4 +84,17 @@ void merge_chunk(chunk_t *chunk)
         if (chunk->next)
             chunk->next->prev = chunk->prev;
     }
+}
+
+size_t get_time(void)
+{
+    time_t t;
+    struct tm *tm_info;
+    char   buffer[15];
+
+    time(&t);
+    tm_info = localtime(&t);
+    strftime(buffer, sizeof(buffer), "%Y%m%d%H%M%S", tm_info);
+
+    return ((size_t)atoll(buffer));
 }
