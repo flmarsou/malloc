@@ -35,9 +35,23 @@ void ft_free(void *ptr)
         page_t **head;
 
         if (page->size == ALIGN_PAGE(TINY_PAGE_SIZE))
+        {
             head = &g_allocator.tiny;
+            if (*head == page && !page->next)
+            {
+                pthread_mutex_unlock(&g_malloc_mutex);
+                return ;
+            }
+        }
         else if (page->size == ALIGN_PAGE(SMALL_PAGE_SIZE))
+        {
             head = &g_allocator.small;
+            if (*head == page && !page->next)
+            {
+                pthread_mutex_unlock(&g_malloc_mutex);
+                return ;
+            }
+        }
         else
             head = &g_allocator.large;
 
