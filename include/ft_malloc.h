@@ -17,8 +17,17 @@
 //    Data                                                                    //
 // ========================================================================== //
 
+typedef struct total
+{
+    size_t alloc; // Byte size of allocated blocks
+    size_t free;  // Byte size of freed blocks
+    size_t all;   // Byte size of allocated and freed blocks
+    size_t raw;   // Byte size of allocated and freed blocks, chunk_t and page_t headers
+} total_t;
+
 typedef struct chunk
 {
+    size_t        time; // Time of the allocation
     size_t        size; // Size of the usable data (excludes header)
     bool          free; // Wether this chunk is available for allocation
     struct page  *page; // Back-pointer to the parent page
@@ -61,6 +70,7 @@ void     append_page(page_t **head, page_t *page);
 
 chunk_t *find_free_chunk(const page_t *page, size_t size);
 void     split_chunk(chunk_t *chunk, size_t size);
+size_t   get_time(void);
 
 //    Free                           //
 // ================================= //
@@ -80,5 +90,6 @@ void *ft_realloc(void *ptr, size_t size);
 //    Debug                          //
 // ================================= //
 
-void show_alloc_mem();
-void show_alloc_mem_ex();
+void show_alloc_mem(void);
+void show_alloc_mem_ex(void);
+void show_alloc_mem_time(void);
