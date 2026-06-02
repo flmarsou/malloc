@@ -100,6 +100,8 @@ static void show_page(const page_t *page)
 
 void show_alloc_mem_ex()
 {
+    pthread_mutex_lock(&g_malloc_mutex);
+
     if (g_allocator.tiny)
     {
         printf("%sTiny Head%s -> %s%s%p%s\n", CYAN, RESET, GREEN, BOLD, (void *)g_allocator.tiny, RESET);
@@ -117,4 +119,6 @@ void show_alloc_mem_ex()
         printf("%sLarge Head%s -> %s%s%p%s\n", CYAN, RESET, GREEN, BOLD, (void *)g_allocator.large, RESET);
         show_page(g_allocator.large);
     }
+
+    pthread_mutex_unlock(&g_malloc_mutex);
 }

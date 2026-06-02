@@ -43,6 +43,8 @@ static void show_page(const page_t *page, size_t *total, size_t *total_raw)
 
 void show_alloc_mem()
 {
+    pthread_mutex_lock(&g_malloc_mutex);
+
     size_t total = 0;
     size_t total_raw = sizeof(page_t);
 
@@ -57,4 +59,6 @@ void show_alloc_mem()
 
     printf("%sTotal    %s -> %s%zu bytes%s\n", CYAN, RESET, GREEN, total, RESET);
     printf("%sTotal Raw%s -> %s%zu bytes%s\n", CYAN, RESET, GREEN, total_raw, RESET);
+
+    pthread_mutex_unlock(&g_malloc_mutex);
 }
