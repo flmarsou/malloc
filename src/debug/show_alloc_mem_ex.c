@@ -98,7 +98,7 @@ static void show_page(const page_t *page)
     printf("\n");
 }
 
-void show_alloc_mem_ex()
+void show_alloc_mem_ex(void)
 {
     pthread_mutex_lock(&g_malloc_mutex);
 
